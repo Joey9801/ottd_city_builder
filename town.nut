@@ -50,7 +50,8 @@ class Town
 	}
 
 	function Grow(growmech);
-	function Service();
+	function Loc();
+	function ServicedStationCount();
 }
 
 function Town::Grow(growmech){
@@ -85,7 +86,7 @@ function Town::Grow(growmech){
 	
 	if(growmech == Growth.GROW_EXPAND){
 		// Try to get close to OpenTTD native grow mechanics
-		local service = this.Service(); 
+		local service = this.ServicedStationCount(); 
 
 		local growrate = GSGameSettings.GetValue("economy.town_growth_rate");
 		local funded = this.funddur > 0 ? 0 : 1;
@@ -108,28 +109,62 @@ function Town::Grow(growmech){
 	}
 }
 
-function Town::Service(){
-	local stlist = GSStationList(GSStation.STATION_ANY);
-	local service = 0; //serviced stations of our town
-	local vstate;
-	foreach(stid, _ in stlist){ //cycle through stations
-		if(service >= 5) break; //we dont need more than 5
-		//is station ours and is close to town centre?
-		if(GSStation.IsValidStation(stid) && GSStation.GetOwner(stid) == this.owner
-			&& GSStation.GetDistanceManhattanToTile(stid, GSTown.GetLocation(this.id)) < 20
-		){
-			local StationVehicleList = GSVehicleList_Station(stid); //get vehicles in station
-			if(!StationVehicleList.IsEmpty()){
-				foreach(vehicleid, _ in StationVehicleList){
-					vstate = GSVehicle.GetState(vehicleid);
-					//if there is at least one active vehicle, increment service
-					if(vstate == GSVehicle.VS_RUNNING || vstate == GSVehicle.VS_AT_STATION){
-						service++;
-						break;
-					}
+function Town::Loc() {
+	return GSTown.GetLocation(this.id);
+}
+
+/// Returns the count of stations that are being serviced in this town, capped at 5
+function Town::ServicedStationCount(){
+	// Set of filters on stations.
+	// Each filters has the signature (station id) -> bool, returning true if the station passes the filter
+	// A station must pass all filters to be considered serviced
+	local station_filters = [
+		// Is this a valid station at all
+		GSStation.IsValidStation,
+
+		// Is it owned by the correct player
+		function (stid) { return GSStation.GetOwner(stdid) == this.owner },
+
+		// Is is close enough to the center of this town
+		function (stid) { return GSStation.GetDistanceManhattanToTile(stid, this.Loc()) < 20 },
+
+		// Is there at least one active vehicle there
+		function (stid) {
+			foreach (vehicle_id, _ in GSVehicleList_Station(stid)) {
+				local vehicle_state = GSVehicle.GetState(vehicle_id);
+				if (vehicle_state == GSVehicle.VS_RUNNING || vehicle_state.GSVehicle.VS_AT_STATION) {
+					return true;
 				}
 			}
+			return false;
+		}
+	]
+
+	// Running count of serviced stations
+	local serviced_station_count = 0;
+
+	// Iterate through every station in the world
+	foreach (station_id, _ in GSStationList(GsStation.STATION_ANY)) {
+		// If all the filters pass, this is a serviced station
+		if (all(station_filters, function(filter) { return filter(stid); })) {
+			serviced_station_count += 1;
+		}
+
+		if (serviced_station_count >= 5) {
+			// No need to count further than this
+			break;
+		} 
+	}
+
+	return serviced_station_count;
+}
+
+function all(arr, predicate) {
+	foreach (value in arr) {
+		if (!predicate(value)) {
+			return false;
 		}
 	}
-	return service;
+
+	return true;
 }

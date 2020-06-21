@@ -5,26 +5,71 @@
 
 class Town
 {
+	/// The ID of this town.
+	/// This ID is invariant to town name changes
     id = INVALID_TOWN;
+
+	/// The ID of the company that owns this town.
+	/// This ID is invariant to company name changes.
     owner = INVALID_COMPANY;
+
+	/// Boolean, is this town a city.
     city = null;
-    growing = false; //is town growing?
+
+	/// Is the town currently making progress toward the next growth step
+    growing = false;
+
+	/// Number of ticks until the next growth step.
+	/// Only relevant if using the EXPAND growth mechanic added by this mod.
     grow_counter = 320; //when <0 build a house
-    delta = 0; //date of last growth check, updates grow_counter
-    nameid = 0; //town string name
-    president = ""; //president name for change name check
-    storage =   [];
+
+	/// Date of the last growth check. Used when updating grow_counter.
+	/// TODO: rename to something sensible.
+    delta = 0;
+	
+	/// Town string name
+    nameid = 0;
+
+	/// President name for change name check
+    president = "";
+
+	/// Amount of each type of cargo stored at this town.
+	/// Base game cargo type IDs are in the range (0, 31), so can use a simple array for this.
+	/// TODO: Make this a table
+    storage = [];
+	
+	/// Amount of each type of cargo delivered to this town in the current month
+	/// Base game cargo type IDs are in the range (0, 31), so can use a simple array for this.
+	/// TODO: Make this a table
     delivered = [];
-    missing = 0; //mask of missing cargos
-    service = false; //has town transport service?
+
+	// Bitmask of cargo ids where the delivered this month is less than the required.
+    missing = 0;
+	
+	/// Boolean, is the number of active stations at this town non-zero.
+    service = false;
     
-    notgrowinrow = 0; //consecutive months when town did not grew
-    growinrow = 0; //consecutive months when town did grew
-    growtotal = 0; //total months when town did grew
-    monthstotal = 0; //total months in game
-    prevgrowed = false; //did town grew last month?
-    funddur = 0;  //duratio nof funding buildings
-    fundedtotal = 0; //total funded months
+	/// Consecutive months when town did not grew
+    notgrowinrow = 0;
+
+	/// Consecutive months when town did grew
+    growinrow = 0;
+
+	/// Total months when town did grew
+    growtotal = 0;
+
+	/// Total months since the start of the game
+    monthstotal = 0;
+
+	/// Was the town growing at the end of the most recently completed month
+    prevgrowed = false;
+
+	/// The number of consecutive months that buildings have been funded in this town.
+	/// 0 if buildings are not currently being funded.
+    funddur = 0;
+
+	/// The total number of months for which buildings have been funded in this town this game.
+    fundedtotal = 0;
 
     constructor(id, owner, city = null){
         this.id = id;

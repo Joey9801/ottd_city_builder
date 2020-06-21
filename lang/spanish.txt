@@ -1,0 +1,108 @@
+##plural 0
+# Simpleton City Builder   english.txt
+#
+
+#town area
+STR_HQTOWN                        :Ciudad de {COMPANY}
+STR_HQAREA_RIGHT                  :> Área de {COMPANY}
+STR_HQAREA_BOTTOM                 : v Área de {COMPANY} v
+STR_HQAREA_LEFT                   :Área de {COMPANY} <
+STR_HQERR                         :No puedes reclamar una CIUDAD
+STR_CITY                          :.:: Ciudad ::.
+STR_CITY2                         :{YELLOW}.:: Ciudad ::.
+
+#welcome message
+STR_WELCOME                       :{}{BIG_FONT}Saludos y bienvenido a la experiencia City Builder o Ingenieros Urbanos{}{}Traido para ti por{}{}{YELLOW}El Equipo de Novapolis{}{}{WHITE}http://novapolis.net{}{}
+
+
+#news
+STR_NEW_HQ                        :{COMPANY} ha reclamado {TOWN}
+STR_PLACE_HQ                      :Construye tu sede (HQ) en una ciudad para reclamarla; aviso, ¡Las grandes ciudades no pueden ser reclamadas!
+STR_TOWN_CLAIMED                  :{COMPANY} reclamó {TOWN}
+STR_TOWN_POPLIMIT                 :{COMPANY} falló al reclamar {TOWN} debido a una población demasiado grande
+STR_TOWN_NOTCLAIMED               :{COMPANY} no ha encontrado ninguna ciudad cercana
+STR_CITY_NOTCLAIMED               :{COMPANY} no puede reclamar una CIUDAD
+STR_TOWN_HAS_OWNER                :{TOWN} ya ha sido reclamada por {COMPANY}
+STR_TOWN_NEIGHBOUR_CLOSE          :{COMPANY} ha intentado reclamar una ciudad demasiado cerca de otra empresa
+
+#information
+STR_PLACE_HQ_INFO                 :Construye tu sede (HQ) en una ciudad con una población menor de {YELLOW}{COMMA} {BLACK}personas para reclamarla, ¡Las grandes ciudades no pueden ser reclamadas!
+STR_TOWN_CLAIMED_INFO             :{BLACK}Has reclamado {YELLOW}{TOWN}{BLACK}.{}{}Puedes ver lo que necesita tu ciudad en la ventana de ciudad así como en el GUI de metas.
+STR_TOWN_NOTCLAIMED_INFO          :No hay ninguna ciudad cerca
+STR_CITY_NOTCLAIMED_INFO          :No puedes reclamar una {YELLOW}CIUDAD
+STR_TOWN_HAS_OWNER_INFO           :{YELLOW}{TOWN} {BLACK}ya ha sido reclamada
+STR_TOWN_NEIGHBOUR_CLOSE_INFO     :{YELLOW}{TOWN} {BLACK}está muy cerca de otra ciudad reclamada
+
+#STR_TOWN_CLAIMED_RES              :{}Town will require {}{STRING2}{}{STRING2}{}{STRING2}{}{STRING2}{}{STRING2}{}{STRING2}
+STR_TOWN_CLAIMED_RES              :{BLACK}La ciudad requerirá
+STR_POINT_TO_STORY_REQ            :{BLACK}Puedes comprobar la lista de requisitos de carga de la localidad en la {YELLOW}Página de Historia {BLACK}en cualquier momento
+
+#dummy
+STR_EMPTY0                        :
+STR_EMPTY1                        :{STRING}
+STR_EMPTY2                        :{STRING}{STRING}
+
+
+#goal gui
+STR_GLOBAL_GOAL_CB                :{ORANGE}INGENIERO URBANO ::: La meta del juego es alcanzar una población de : {GREEN}{COMMA} {BLACK}personas
+STR_GAME_LENGTH                   :{GREEN}{NUM}  {BLACK}año{P "" s} para el fin del juego
+
+STR_TOWN_CB_HEADER                :  {ORANGE}Requisitos de tu ciudad
+
+STR_SCORE_GOAL_CB                 :{WHITE}   #{NUM} {YELLOW}[{NUM}%] {BLACK}: {YELLOW}{COMPANY} {BLACK}con una población de {YELLOW}{COMMA} {BLACK}personas en {YELLOW}{TOWN}
+STR_SCORE_NOGOAL_CB               :{WHITE}   #{NUM} {BLACK}: {YELLOW}{COMPANY} {BLACK}con una población de {YELLOW}{COMMA} {BLACK}personas en {YELLOW}{TOWN}
+
+STR_TOWN_REQ_GUI                  :  {LTBLUE}{CARGO_LIST}   {BLACK}Almacen : {GREEN}{COMMA} {BLACK}unidades  ( {YELLOW}{NUM}{BLACK} % ), Entregado / Requerido : {YELLOW}{COMMA} {BLACK}/ {DKGREEN}{COMMA}
+STR_TOWN_REQ_GUI_NOSTORAGE        :  {LTBLUE}{CARGO_LIST}   {BLACK}Entregado / Requerido: {YELLOW}{COMMA} {BLACK}/ {DKGREEN}{COMMA}
+
+
+
+STR_TOWN_MISSING_CARGO            :{BLACK}Servicios adecuados aún carentes en la Ciudad :   {WHITE}{CARGO_LIST}
+STR_TOWN_GROWTH_RATE              :{BLACK}1 casa en {ORANGE}{COMMA} {BLACK}días ({ORANGE}{COMMA}{BLACK}%), siguiente en {YELLOW}{COMMA}{BLACK} día{P "" s}
+
+STR_TOWN_NEXT_CARGO               :{BLACK}Siguiente/s: {GREEN}{CARGO_LIST} {BLACK}para una población de {GREEN}{COMMA} {BLACK}ó mayor
+
+
+#town gui
+
+STR_TOWNW_GROWTYPE_GROW           :{BLACK}La ciudad está {GREEN}creciendo
+STR_TOWNW_GROWTYPE_NOTGROW        :{BLACK}La ciudad {RED}no {BLACK}está creciendo
+
+STR_TOWNW_GROWTYPE_GROW_PLUS      :{BLACK}La ciudad está {GREEN}creciendo{} {BLACK}Cantidades de carga faltantes:
+STR_TOWNW_GROWTYPE_NOTGROW_PLUS   :{BLACK}La ciudad {RED}no {BLACK}está creciendo{} {BLACK}Cantidades de carga faltantes:
+
+
+STR_TOWN_CARGO_GOOD               :{}    {GREEN}{CARGO_LIST}   OK{STRING}
+STR_TOWN_CARGO_YES                :{} {ORANGE}{CARGO_LIST} {COMMA}
+STR_TOWN_CARGO_NO                 :{}    {SILVER}{CARGO_LIST}   {COMMA}
+
+
+STR_TOWNW_MISSING_CARGO           :{} {BLACK}Servicios adecuados aún carentes en la Ciudad :   {WHITE}{CARGO_LIST}{STRING}
+
+STR_TOWNW_NEXT_CARGO              :{} {BLACK}Siguiente: {GREEN}{CARGO_LIST} {BLACK}por una población de {GREEN}{COMMA} {BLACK}personas
+
+
+#town names according to population
+STR_TOWNNAME_POP0                 :Asentamiento
+STR_TOWNNAME_POP1                 :Centro turístico
+STR_TOWNNAME_POP2                 :Pueblo
+STR_TOWNNAME_POP3                 :Ciudad
+STR_TOWNNAME_POP4                 :Gran ciudad
+STR_TOWNNAME_POP5                 :Metrópolis
+
+
+#goal progress
+STR_WINNER_TIME                   :{BLACK}El juego ha terminado.{} {YELLOW}{COMPANY} {BLACK}ha ganado con una población de {YELLOW}{COMMA} {BLACK}
+
+STR_STORY_TITLE_REQ               :{GREEN}Requisitos de Ingenieros Urbanos
+
+STR_STORY_TITLE                   :{WHITE}Premios anuales de los Ingenieros Urbanos
+STR_STORY_PROGRESS                :{WHITE}{NUM} {BLACK}: {YELLOW}{COMPANY} {BLACK}con una población de {YELLOW}{COMMA} {BLACK} ({YELLOW}{STRING}{COMMA}{BLACK}).
+
+#test
+#STR_COLOURS                       :{BLACK}ABC  {WHITE}ABC {RED}ABC    {GREEN}ABC {BLUE}ABC   {YELLOW}ABC {ORANGE}ABC {PURPLE}ABC {GRAY}ABC   {BROWN}ABC {SILVER}ABC {GOLD}ABC {CREAM}ABC  {LTBLUE}ABC {DKBLUE}ABC {DKGREEN}ABC {LTBROWN}ABC
+
+#usable and well visible in GUI:
+#{BLACK} {WHITE} {GREEN} {YELLOW} {ORANGE} {SILVER} {GOLD} {LTBLUE} {DKGREEN}
+#usable colours
+#{BLACK}  {WHITE} {RED}    {GREEN} {BLUE}   {YELLOW} {ORANGE} {PURPLE} {GRAY}   {BROWN} {SILVER} {GOLD} {CREAM}  {LTBLUE} {DKBLUE} {DKGREEN} {LTBROWN}

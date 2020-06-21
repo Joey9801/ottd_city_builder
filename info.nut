@@ -1,187 +1,187 @@
 /*
-	Simpleton City Builder info.nut
-	SimpletonCBInfo class - information and settings
+    Simpleton City Builder info.nut
+    SimpletonCBInfo class - information and settings
 
-	Origin - Novapolis team, http://novapolis.net
-	Author - The Dude
-	Licence - GPLv2
-	Purpose - Simple city builder script, towns require cargos to grow
-	Special Thanks
-		- xOR, Knogle and Frank for help and Sign management part
-		- Zuu, frosch and OpenTTD Development team for GS and all (openttd.org)
+    Origin - Novapolis team, http://novapolis.net
+    Author - The Dude
+    Licence - GPLv2
+    Purpose - Simple city builder script, towns require cargos to grow
+    Special Thanks
+        - xOR, Knogle and Frank for help and Sign management part
+        - Zuu, frosch and OpenTTD Development team for GS and all (openttd.org)
 */
 
 class SimpletonCBInfo extends GSInfo {
-	function GetAuthor()      { return "TheDude"; }
-	function GetName()        { return "Simpleton's City Builder"; }
-	function GetDescription() { return "Easily configured City Builder simulation script"; }
-	function GetVersion()     { return 11; }
-	function GetDate()        { return "2017-11-11"; }
-	function CreateInstance() { return "SimpletonCB"; }
-	function GetShortName()   { return "SMCB"; }
-	function GetAPIVersion()  { return "1.5"; }
-	function GetUrl()         { return "http://novapolis.net"; }
+    function GetAuthor()      { return "TheDude"; }
+    function GetName()        { return "Simpleton's City Builder"; }
+    function GetDescription() { return "Easily configured City Builder simulation script"; }
+    function GetVersion()     { return 11; }
+    function GetDate()        { return "2017-11-11"; }
+    function CreateInstance() { return "SimpletonCB"; }
+    function GetShortName()   { return "SMCB"; }
+    function GetAPIVersion()  { return "1.5"; }
+    function GetUrl()         { return "http://novapolis.net"; }
 
-	function GetSettings() {
-		AddSetting({
-			name = "morelogs",
-			description = "Print more logs to Script console",
-			easy_value = 0,
-			medium_value = 0,
-			hard_value = 0,
-			custom_value = 0,
-			min_value = 0,
-			max_value = 2,
-			flags = CONFIG_NONE | CONFIG_INGAME,
-		});
-		AddLabels(
-			"morelogs", {_0 = "Normal", _1 = "More", _2 = "More more"}
-		);
+    function GetSettings() {
+        AddSetting({
+            name = "morelogs",
+            description = "Print more logs to Script console",
+            easy_value = 0,
+            medium_value = 0,
+            hard_value = 0,
+            custom_value = 0,
+            min_value = 0,
+            max_value = 2,
+            flags = CONFIG_NONE | CONFIG_INGAME,
+        });
+        AddLabels(
+            "morelogs", {_0 = "Normal", _1 = "More", _2 = "More more"}
+        );
 
-		AddSetting({
-			name = "startpause",
-			description = "Pause game on start. Unpause when first company starts",
-			easy_value = 0,
-			medium_value = 0,
-			hard_value = 0,
-			custom_value = 0,
-			flags = CONFIG_BOOLEAN,
-		});
-		AddSetting({
-			name = "xMapgen",
-			description = "Generate Power Plant, Water Tower industries for each town (climate dependant)",
-			easy_value = 0,
-			medium_value = 0,
-			hard_value = 0,
-			custom_value = 0,
-			flags = CONFIG_BOOLEAN,
-		});
-		AddSetting({
-			name = "goal",
-			description = "City Builder Goal (population)",
-			easy_value = 5000,
-			medium_value = 10000,
-			hard_value = 50000,
-			custom_value = 10000,
-			flags = CONFIG_NONE | CONFIG_INGAME,
-			min_value = 0,
-			max_value = 1000000,
-		});
-		AddSetting({
-			name = "gamelength",
-			description = "Game Length in Years. If set to 0, game ends when goal reached",
-			easy_value = 12,
-			medium_value = 12,
-			hard_value = 12,
-			custom_value = 12,
-			flags = CONFIG_NONE | CONFIG_INGAME,
-			min_value = 0,
-			max_value = 1000,
-		});
-		AddSetting({
-			name = "changetownname",
-			description = "Town name - change town name according to its company owner and population",
-			easy_value = 0,
-			medium_value = 0,
-			hard_value = 0,
-			custom_value = 0,
-			flags = CONFIG_BOOLEAN | CONFIG_INGAME,
-		});
-		AddSetting({
-			name = "goalprogress",
-			description = "Goal progress messages. Informs players about game end and goal progress of all companies.",
-			easy_value = 0,
-			medium_value = 0,
-			hard_value = 0,
-			custom_value = 0,
-			flags = CONFIG_BOOLEAN | CONFIG_INGAME,
-		});
-		AddSetting({
-			name = "townarea",
-			description = "Town area - place signs around town, set 0 to disable",
-			easy_value = 0,
-			medium_value = 0,
-			hard_value = 0,
-			custom_value = 0,
-			flags = CONFIG_NONE | CONFIG_INGAME,
-			min_value = 0,
-			max_value = 50,
-		});
+        AddSetting({
+            name = "startpause",
+            description = "Pause game on start. Unpause when first company starts",
+            easy_value = 0,
+            medium_value = 0,
+            hard_value = 0,
+            custom_value = 0,
+            flags = CONFIG_BOOLEAN,
+        });
+        AddSetting({
+            name = "xMapgen",
+            description = "Generate Power Plant, Water Tower industries for each town (climate dependant)",
+            easy_value = 0,
+            medium_value = 0,
+            hard_value = 0,
+            custom_value = 0,
+            flags = CONFIG_BOOLEAN,
+        });
+        AddSetting({
+            name = "goal",
+            description = "City Builder Goal (population)",
+            easy_value = 5000,
+            medium_value = 10000,
+            hard_value = 50000,
+            custom_value = 10000,
+            flags = CONFIG_NONE | CONFIG_INGAME,
+            min_value = 0,
+            max_value = 1000000,
+        });
+        AddSetting({
+            name = "gamelength",
+            description = "Game Length in Years. If set to 0, game ends when goal reached",
+            easy_value = 12,
+            medium_value = 12,
+            hard_value = 12,
+            custom_value = 12,
+            flags = CONFIG_NONE | CONFIG_INGAME,
+            min_value = 0,
+            max_value = 1000,
+        });
+        AddSetting({
+            name = "changetownname",
+            description = "Town name - change town name according to its company owner and population",
+            easy_value = 0,
+            medium_value = 0,
+            hard_value = 0,
+            custom_value = 0,
+            flags = CONFIG_BOOLEAN | CONFIG_INGAME,
+        });
+        AddSetting({
+            name = "goalprogress",
+            description = "Goal progress messages. Informs players about game end and goal progress of all companies.",
+            easy_value = 0,
+            medium_value = 0,
+            hard_value = 0,
+            custom_value = 0,
+            flags = CONFIG_BOOLEAN | CONFIG_INGAME,
+        });
+        AddSetting({
+            name = "townarea",
+            description = "Town area - place signs around town, set 0 to disable",
+            easy_value = 0,
+            medium_value = 0,
+            hard_value = 0,
+            custom_value = 0,
+            flags = CONFIG_NONE | CONFIG_INGAME,
+            min_value = 0,
+            max_value = 50,
+        });
 
-		AddSetting({
-			name = "dyngrowth",
-			description = "Dynamic change of town growth rate. Every X years is increased by 1 up to maximum 4. Set to 0 to disable it",
-			easy_value = 0,
-			medium_value = 0,
-			hard_value = 0,
-			custom_value = 0,
-			flags = CONFIG_NONE | CONFIG_INGAME,
-			min_value = 0,
-			max_value = 100,
-		});
-		
-		AddSetting({
-			name = "cityPopLimit",
-			description = "Limit cities population to X times biggest town on map",
-			easy_value = 0,
-			medium_value = 0,
-			hard_value = 0,
-			custom_value = 0,
-			flags = CONFIG_NONE | CONFIG_INGAME,
-			min_value = 0,
-			max_value = 10,
-		});
+        AddSetting({
+            name = "dyngrowth",
+            description = "Dynamic change of town growth rate. Every X years is increased by 1 up to maximum 4. Set to 0 to disable it",
+            easy_value = 0,
+            medium_value = 0,
+            hard_value = 0,
+            custom_value = 0,
+            flags = CONFIG_NONE | CONFIG_INGAME,
+            min_value = 0,
+            max_value = 100,
+        });
+        
+        AddSetting({
+            name = "cityPopLimit",
+            description = "Limit cities population to X times biggest town on map",
+            easy_value = 0,
+            medium_value = 0,
+            hard_value = 0,
+            custom_value = 0,
+            flags = CONFIG_NONE | CONFIG_INGAME,
+            min_value = 0,
+            max_value = 10,
+        });
 
-		AddSetting({
-			name = "growmechanism",
-			description = "Town Growth mechanism",
-			easy_value = 0,
-			medium_value = 0,
-			hard_value = 0,
-			custom_value = 0,
-			min_value = 0,
-			max_value = 1,
-			flags = CONFIG_NONE | CONFIG_INGAME,
-		});
-		AddLabels(
-			"growmechanism", {_0 = "Normal", _1 = "Expand"} //, _2 = "diversified"
-		);
+        AddSetting({
+            name = "growmechanism",
+            description = "Town Growth mechanism",
+            easy_value = 0,
+            medium_value = 0,
+            hard_value = 0,
+            custom_value = 0,
+            min_value = 0,
+            max_value = 1,
+            flags = CONFIG_NONE | CONFIG_INGAME,
+        });
+        AddLabels(
+            "growmechanism", {_0 = "Normal", _1 = "Expand"} //, _2 = "diversified"
+        );
 
-		AddSetting({
-			name = "claimpop",
-			description = "Max claimable town population",
-			easy_value = 800,
-			medium_value = 500,
-			hard_value = 250,
-			custom_value = 250,
-			flags = CONFIG_NONE | CONFIG_INGAME,
-			min_value = 0,
-			max_value = 50000,
-		});
+        AddSetting({
+            name = "claimpop",
+            description = "Max claimable town population",
+            easy_value = 800,
+            medium_value = 500,
+            hard_value = 250,
+            custom_value = 250,
+            flags = CONFIG_NONE | CONFIG_INGAME,
+            min_value = 0,
+            max_value = 50000,
+        });
 
-		AddSetting({
-			name = "storage",
-			description = "Town storage (x times requirements)",
-			easy_value = 4,
-			medium_value = 4,
-			hard_value = 4,
-			custom_value = 4,
-			flags = CONFIG_NONE | CONFIG_INGAME,
-			min_value = 0,
-			max_value = 100,
-		});
+        AddSetting({
+            name = "storage",
+            description = "Town storage (x times requirements)",
+            easy_value = 4,
+            medium_value = 4,
+            hard_value = 4,
+            custom_value = 4,
+            flags = CONFIG_NONE | CONFIG_INGAME,
+            min_value = 0,
+            max_value = 100,
+        });
 
-		AddSetting({
-			name = "div000", description = "", easy_value = 1, medium_value = 1, hard_value = 1, custom_value = 1, flags = CONFIG_BOOLEAN,
-		});
-		AddSetting({
-			name = "category000", description = " >>> TOWN REQUIREMENTS PER 1000 INHABITANTS <<< ", easy_value = 1, medium_value = 1, hard_value = 1, custom_value = 1, flags = CONFIG_BOOLEAN,
-		});
-		AddSetting({
-			name = "category001", description = "   > ECS, FIRS and YETI cargos are marked E:, F: or Y: when they are different from original cargos < ", easy_value = 1, medium_value = 1, hard_value = 1, custom_value = 1, flags = CONFIG_BOOLEAN,
-		});
+        AddSetting({
+            name = "div000", description = "", easy_value = 1, medium_value = 1, hard_value = 1, custom_value = 1, flags = CONFIG_BOOLEAN,
+        });
+        AddSetting({
+            name = "category000", description = " >>> TOWN REQUIREMENTS PER 1000 INHABITANTS <<< ", easy_value = 1, medium_value = 1, hard_value = 1, custom_value = 1, flags = CONFIG_BOOLEAN,
+        });
+        AddSetting({
+            name = "category001", description = "   > ECS, FIRS and YETI cargos are marked E:, F: or Y: when they are different from original cargos < ", easy_value = 1, medium_value = 1, hard_value = 1, custom_value = 1, flags = CONFIG_BOOLEAN,
+        });
 
-		local cargoDef = [
+        local cargoDef = [
 /* CARGOID  REQ   FROM  DEC  CARGO NAME (NORMAL, E=ECS, F=FIRS, Y=YETI) */
 /* 00 */ [  200,     0,   0, "Passengers" ],
 /* 01 */ [  100,   250,   0, "Coal / Rubber / Sugar / Y:Stone" ],
@@ -215,19 +215,19 @@ class SimpletonCBInfo extends GSInfo {
 /* 29 */ [    0,     0,   0, " - / E:Lime stone / F:Alcohol" ],
 /* 30 */ [    0,     0,   0, " - / E:Lime stone" ],
 /* 31 */ [    0,     0,   0, " - / E:Tourists / F:Recyclables" ]
-		];
+        ];
 
-		local var = "";
-		for(local i = 0; i < 32; i++){
-			AddSetting({ name = "cat"+i, description = " >>> "+cargoDef[i][3]+" <<< ", easy_value = 1, medium_value = 1, hard_value = 1, custom_value = 1, flags = CONFIG_BOOLEAN, });
-			var = "req" + i;
-			AddSetting({ name = var, description = "Requirements ", min_value = 0, max_value = 10000, easy_value = cargoDef[i][0], medium_value = cargoDef[i][0], hard_value = cargoDef[i][0], custom_value = cargoDef[i][0], flags = CONFIG_NONE | CONFIG_INGAME, });
-			var = "pop" + i;
-			AddSetting({ name = var, description = "From", min_value = 0, max_value = 50000, easy_value = cargoDef[i][1], medium_value = cargoDef[i][1], hard_value = cargoDef[i][1], custom_value = cargoDef[i][1], flags = CONFIG_NONE | CONFIG_INGAME, });
-			var = "dec" + i;
-			AddSetting({ name = var, description = "Decay", min_value = 0, max_value = 100, easy_value = cargoDef[i][2], medium_value = cargoDef[i][2], hard_value = cargoDef[i][2], custom_value = cargoDef[i][2], flags = CONFIG_NONE | CONFIG_INGAME, });
-		}
-	}
+        local var = "";
+        for(local i = 0; i < 32; i++){
+            AddSetting({ name = "cat"+i, description = " >>> "+cargoDef[i][3]+" <<< ", easy_value = 1, medium_value = 1, hard_value = 1, custom_value = 1, flags = CONFIG_BOOLEAN, });
+            var = "req" + i;
+            AddSetting({ name = var, description = "Requirements ", min_value = 0, max_value = 10000, easy_value = cargoDef[i][0], medium_value = cargoDef[i][0], hard_value = cargoDef[i][0], custom_value = cargoDef[i][0], flags = CONFIG_NONE | CONFIG_INGAME, });
+            var = "pop" + i;
+            AddSetting({ name = var, description = "From", min_value = 0, max_value = 50000, easy_value = cargoDef[i][1], medium_value = cargoDef[i][1], hard_value = cargoDef[i][1], custom_value = cargoDef[i][1], flags = CONFIG_NONE | CONFIG_INGAME, });
+            var = "dec" + i;
+            AddSetting({ name = var, description = "Decay", min_value = 0, max_value = 100, easy_value = cargoDef[i][2], medium_value = cargoDef[i][2], hard_value = cargoDef[i][2], custom_value = cargoDef[i][2], flags = CONFIG_NONE | CONFIG_INGAME, });
+        }
+    }
 }
 
 RegisterGS(SimpletonCBInfo());

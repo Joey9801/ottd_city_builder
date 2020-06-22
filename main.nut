@@ -562,31 +562,42 @@ function SimpletonCB::StopTownMonitor(companyid, townid){
         }
     }
 }
-//limit city growing if population is too big
-function SimpletonCB::LimitCityPopulation(){
-    if(this.maxCityPop == 0) return; //disabled
 
-    local townlist = GSTownList();
-    local cityList = [];
-    local maxTownPop = 2000; //least allowable city size
-    foreach(townid, _ in townlist){
-        if(!GSTown.IsCity(townid)) maxTownPop = max(maxTownPop, GSTown.GetPopulation(townid)); //get max town pop
-        else cityList.append(townid); //cities for later
+/// Prevent citites that are getting too big from growing any further
+function SimpletonCB::LimitCityPopulation() {
+    // Special value of 0 signals that this feature is disabled
+    if(this.maxCityPop == 0) {
+        return;
     }
 
-    maxTownPop = maxTownPop * this.maxCityPop;
-    //Log("max "  + maxTownPop);
-    foreach(townid in cityList){
-        local growrate = GSTown.GetGrowthRate(townid);
-        if(GSTown.GetPopulation(townid) > maxTownPop){ //if bigger
-            //Log(GSTown.GetName(townid) + " NOT growing " + GSTown.GetPopulation(townid));
-            if(growrate != GSTown.TOWN_GROWTH_NONE){ //check if already not growing
-                GSTown.SetGrowthRate(townid, GSTown.TOWN_GROWTH_NONE);
-            }
+    local maxTownPop = GSTownList()
+        .filter(function (t) { return !GSTown.IsCity(t); })
+        .map(function (t) { return GSTown.GetPopulation(t); })
+        .reduce(function (acc, pop) { return acc + pop; })
+
+    // TODO: Rename this.maxCityPop to something that reflects that it is a
+    // multiplier on the current largest town, rather than an absolute threshold.
+    local maxCityPop = max(maxTownPop, 2000) * this.maxCityPop;
+
+    foreach (townId in GSTownList())
+        if !GSTown.IsCity(t) {
+            continue;
         }
-        else if(growrate == GSTown.TOWN_GROWTH_NONE){ //lower, check if we need to set to normal
-            //Log(GSTown.GetName(townid) + " growing " + GSTown.GetPopulation(townid));
-            GSTown.SetGrowthRate(townid, GSTown.TOWN_GROWTH_NORMAL);
+
+        // GSTown.SetGrowthRate counts as command, which means there is an
+        // artificial cost to running it. Do the following little dance to only
+        // call it when needed.
+
+        local current_growth = GSTown.GetGrowthRate(townId);
+        local desired_growth;
+        if (GSTown.GetPopulation(townId) > maxCityPop) {
+            desired_growth = GSTown.TOWN_GROWTH_NONE;
+        } else {
+            desired_growth = GSTown.TOWN_GROWTH_NORMAL;
+        }
+
+        if (current_growth != desired_growth) {
+            GSTown.SetGrowthRate(townId, desired_growth);
         }
     }
 }
@@ -792,6 +803,22 @@ function arrcmp(a, b){
     if(a.from > b.from) return 1;
     else if(a.from < b.from) return -1;
     return 0;
+}
+
+function min(a, b) {
+    if (a < b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+function max(a, b) {
+    if (a < b) {
+        return a;
+    } else {
+        return b;
+    }
 }
 
 require("minor.nut");

@@ -1,8 +1,4 @@
-/*
-    Simpleton City Builder   town.nut
-    Town class - town pool of claimed towns
-*/
-
+/// Extra data to store for a claimed town
 class Town
 {
 	/// The ID of this town.
@@ -21,7 +17,7 @@ class Town
 
 	/// Number of ticks until the next growth step.
 	/// Only relevant if using the EXPAND growth mechanic added by this mod.
-    grow_counter = 320; //when <0 build a house
+    grow_counter = 320;
 
 	/// Date of the last growth check. Used when updating grow_counter.
 	/// TODO: rename to something sensible.
@@ -94,9 +90,85 @@ class Town
         this.fundedtotal = 0;
     }
 
+    function Loc() {
+        return GSTown.GetLocation(this.id);
+    }
+
+    /// The number of days between town growth steps, as computed by the native OpenTTD client.
+    /// A period of 0 is a special value meaning that town is not currently growing at all.
+    /// This number ignores any CityBuilder constraints
+    /// const
+    function NormalGrowthPeriod();
+
+    /// The number of days between town growth steps, as computed by this mod.
+    /// A period of 0 is a special value meaning that town is not currently growing at all.
+    /// This number ignores any CityBuilder constraints
+    /// const
+    function ExpandGrowthPeriod();
+
+    /// Either NormalGrowthPeriod or ExpandGrowthPeriod
+    /// const
+    function GrowthPeriod(growth_mechanism);
+    
     function Grow(growmech);
-    function Loc();
+
+    /// Returns the count of stations that are being serviced in this town, capped at 5
+    /// const
     function ServicedStationCount();
+}
+
+function Town::NormalGrowthPeriod() {
+    /// The API method is confusingly named. It's dimensionality really is T rather than 1/T.
+    return GSTown.GetGrowthRate(this.id);
+}
+
+function Town::ExpandGrowthPeriod() {
+    local serviced_station_count = this.ServicedStationCount();
+    local econ_growth_rate = GSGameSettings.GetValue("economy.town_growth_rate");
+    local currently_funded = this.funddur > 0;
+    local house_count = GSTown.GetHouseCount(this.id);
+
+    // The following figures lifted from the OpenTTD source at src/town_cmd.cpp:3410
+    // These are in units of "town ticks"
+    local base_period = [
+        [120, 120, 120, 100,  80,  60],  //with fund buildings
+        [320, 420, 300, 220, 160, 100]   //normal growth
+    ][currently_funded ? 1 : 0][serviced_station_count];
+
+    // There's a 1/12 chance that an unfunded, unserviced town wont grow at all in a month
+    // See OpenTTD src/town_cmd.cpp:3475
+    if (!currently_funded && serviced_station_count == 0 && GSBase.RandRange(12) == 0) {
+        return 0;
+    }
+
+    local growth_multiplier;
+    if (econ_growth_rate == 0) {
+        growth_multiplier = 1;
+    } else {
+        growth_multiplier = econ_growth_rate - 1;
+    }
+
+    // A larger growth multiplier makes a smaller period, therefore a faster growing town.
+    local period = base_period >> growth_multiplier;
+
+    // A larger town grows more quickly
+    period = period / ((house_count / 50) + 1);
+
+    // Can't have a period of 0
+    period = min(period, 1);
+
+    return townTicksToDays(period);
+}
+
+function Town::GrowthPeriod(growth_mechanism) {
+    switch (growth_mechanism) {
+        case Growth.GROW_NORMAL:
+            return this.NormalGrowthPeriod();
+        case Growth.GROW_EXPAND:
+            return this.ExpandGrowthPeriod();
+        default:
+            assert(false);
+    }
 }
 
 function Town::Grow(growmech){
@@ -154,11 +226,6 @@ function Town::Grow(growmech){
     }
 }
 
-function Town::Loc() {
-    return GSTown.GetLocation(this.id);
-}
-
-/// Returns the count of stations that are being serviced in this town, capped at 5
 function Town::ServicedStationCount(){
     // Set of filters on stations.
     // Each filters has the signature (station id) -> bool, returning true if the station passes the filter
@@ -173,7 +240,11 @@ function Town::ServicedStationCount(){
         // Is is close enough to the center of this town
         function (stid) { return GSStation.GetDistanceManhattanToTile(stid, this.Loc()) < 20 },
 
-        // Is there at least one active vehicle there
+        // Is there at least one active vehicle that has this station in its
+        // orders. This check is weaker than the one in the OpenTTD source,
+        // which checks how long ago cargo of any kind was last loaded/unloaded
+        // at each station. This information is not exposed to game scripts.
+        // See OpenTTD src/town_cmd.cpp:3386
         function (stid) {
             foreach (vehicle_id, _ in GSVehicleList_Station(stid)) {
                 local vehicle_state = GSVehicle.GetState(vehicle_id);
@@ -188,7 +259,7 @@ function Town::ServicedStationCount(){
     // Running count of serviced stations
     local serviced_station_count = 0;
 
-    // Iterate through every station in the world
+    // Iterate through every station of every transport mode in the world
     foreach (station_id, _ in GSStationList(GsStation.STATION_ANY)) {
         // If all the filters pass, this is a serviced station
         if (all(station_filters, function(filter) { return filter(stid); })) {
@@ -202,6 +273,22 @@ function Town::ServicedStationCount(){
     }
 
     return serviced_station_count;
+}
+
+function townTicksToDays(town_ticks) {
+    local MAX_TOWN_GROWTH_TICKS = 930;
+    local TOWN_GROWTH_TICKS = 70;
+    local GAME_TICKS_PER_DAY = 74;
+    local game_ticks = (min(town_ticks, MAX_TOWN_GROWTH_TICKS) + 1) * TOWN_GROWTH_TICKS - 1;
+    return game_ticks * GAME_TICKS_PER_DAY;
+}
+
+function min(a, b) {
+    if (a < b) {
+        return a;
+    } else {
+        return b;
+    }
 }
 
 function all(arr, predicate) {

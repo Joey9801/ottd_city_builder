@@ -26,11 +26,6 @@ enum Growth {
     GROW_DIVERS,
     GROW_END,
 }
-/* mapgen methods */
-enum MapGenMethod {
-    RANDOM, // = 0
-    SQUARE,
-}
 
 // This is the main Class
 class SimpletonCB extends GSController
@@ -117,11 +112,15 @@ class SimpletonCB extends GSController
 
 
 
+/// This is the entrypoint into the script. If this method returns then this
+/// script will no longer be running.
 function SimpletonCB::Start() {
-    Log("### Simpleton city Builder STARTS ###");
+    Log("### City Builder script starting up ###");
+
     /* load settings */
     this.log = GSController.GetSetting("morelogs");
-    if(this.from_save == false){
+
+    if (this.from_save == false){
         this.goal = GSController.GetSetting("goal");
         this.game_length = GSController.GetSetting("gamelength");
         
@@ -579,8 +578,8 @@ function SimpletonCB::LimitCityPopulation() {
     // multiplier on the current largest town, rather than an absolute threshold.
     local maxCityPop = max(maxTownPop, 2000) * this.maxCityPop;
 
-    foreach (townId in GSTownList())
-        if !GSTown.IsCity(t) {
+    foreach (townId in GSTownList()) {
+        if (!GSTown.IsCity(t)) {
             continue;
         }
 
@@ -601,6 +600,7 @@ function SimpletonCB::LimitCityPopulation() {
         }
     }
 }
+
 //update town gui and deliveries
 function SimpletonCB::TownsUpdate(goal_gui_update){
     foreach(company in this.companies) {
